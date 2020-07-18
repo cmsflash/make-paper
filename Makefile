@@ -9,7 +9,23 @@ noref: paper.tex
 	make clean
 	pdflatex paper.tex
 
-clean:
-	rm -f paper.aux paper.bbl paper.blg paper.log paper.brf paper.pdf paper.out
+supp: supp.tex
+	make clean
+	pdflatex supp.tex
+	bibtex supp.aux
+	pdflatex supp.tex
+	pdflatex supp.tex
 
-.PHONY: clean
+final:
+	rm -f paper.aux paper.blg paper.log paper.brf paper.out
+	rm -f supp.aux supp.blg supp.log supp.brf supp.out
+
+arxiv: final
+	rm -f paper.pdf
+	rm -f supp.pdf
+
+clean: final
+	rm -f paper.bbl paper.pdf
+	rm -f supp.bbl supp.pdf
+
+.PHONY: arxiv final clean
